@@ -1,0 +1,103 @@
+using System;
+
+namespace ConsoleApp2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int onFire = 1;
+
+
+            Random r = new Random();
+            int setFire = 0;
+
+            int[,] numbers = new int[40, 30];
+
+            //populating 2D Array
+
+            for (int m = 0; m < 40; m++)
+            {
+                for (int n = 0; n < 30; n++)
+                {
+                    numbers[m, n] = 0;
+                    //Console.Write(numbers[m, n] + " ");
+                }
+                //Console.WriteLine("");
+            }
+
+            numbers[0, 0] = 1;
+
+            //Trees set on fire from first tree \/
+
+            for (int m = 0; m < 40; m++)
+            {
+                for (int n = 0; n < 30; n++)
+                {
+                    setFire = r.Next(0, 100);
+
+                    if (setFire >= 85)
+                    {
+                        numbers[m, n] = 1;
+                        onFire++;
+                    }
+
+                    //Console.Write(numbers[m, n] + " ");
+                }
+                //Console.WriteLine("");
+            }
+
+            //Trees set on fire based on their allignment in the array
+
+            for (int m = 0; m < 40; m++)
+            {
+                for (int n = 0; n < 30; n++)
+                {
+                    setFire = r.Next(0, 100);
+
+                    if (numbers[m, n] == 1)
+                    {
+                        //Check if we should set the tree to the right of the current position on fire?
+                        //Stop at the second to last position, and make sure to not hit 30.
+                        if ((n < 28 && n != 30) && (numbers[m, n+1] == 0) && (setFire >= 35))
+                        {
+                            numbers[m, n+1] = 1;
+                            onFire++;
+                        }
+
+                        //Check if we should set the tree to the bottom of the current position on fire?
+                        //Stop at the second to last position, and make sure to not hit 40.
+                        if ((m < 38 && m != 40) && (numbers[m+1, n] == 0) && (setFire >= 35))
+                        {
+                            numbers[m+1, n] = 1;
+                            onFire++;
+                        }
+
+                        //Check if we should set the tree to the top of the current position on fire?
+                        //Stop at the second to last position, and make sure to not hit 40.
+                        if ((m != 0) && (numbers[m - 1, n] == 0) && (setFire >= 35))
+                        {
+                            numbers[m - 1, n] = 1;
+                            onFire++;
+                        }
+                    }
+
+                    Console.Write(numbers[m, n] + " ");
+                }
+                Console.WriteLine("");
+            }
+
+            Console.WriteLine($"Trees on fire: {onFire}");
+        }
+    }
+}
+
+/*
+ * //Check if we should set the tree to the bottom of the current position on fire?
+                        //Stop at the second to last position, and make sure to not hit 40.
+                        if ((numbers[m+1, n] == 0) && (setFire >= 35) && (m < 38 && m != 40))
+                        {
+                            numbers[m+1, n] = 1;
+                            onFire++;
+                        }
+ */
